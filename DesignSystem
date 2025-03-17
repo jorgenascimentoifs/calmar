@@ -1,0 +1,108 @@
+**Design System Atualizado para o Aplicativo "Calmar"**
+
+---
+
+**Paleta de Cores (Tranquilidade Natural):**
+
+- **Background Principal:** Bege Claro Suave (#FAF9F2)  
+  Proporciona um ambiente acolhedor, calmo e relaxante para uma melhor experiência.
+
+- **Cor Primária (Logo e Destaques):** Verde Azulado Degradê (#478E89 → #2F6874)  
+  Cor inspirada diretamente no logo, reflete equilíbrio emocional e serenidade.
+
+- **Cor Secundária (Detalhes e Elementos Suaves):** Verde Água Claro (#A0CEC9)  
+  Complementa delicadamente a cor primária, transmitindo leveza e harmonia.
+
+- **Texto Principal:** Cinza Petróleo (#39555C)  
+  Combina perfeitamente com a paleta principal, garantindo ótima legibilidade.
+
+- **Cor de Apoio:** Creme Claro (#F5EFE0)  
+  Ideal para pequenos detalhes e elementos secundários, mantendo leveza visual.
+
+---
+
+**Logotipo:**
+
+- **Cor Principal:** Verde Azulado Degradê (#478E89 → #2F6874)  
+  A identidade visual reflete a missão do Calmar, transmitindo calma, crescimento pessoal e equilíbrio emocional.
+
+---
+
+**Tipografia:**
+
+- **Headlines e Destaques:** "Nunito", Bold  
+  Fonte suave e amigável, promove conexão emocional e acolhimento.
+
+- **Corpo de Texto:** "Inter", Regular  
+  Excelente legibilidade e conforto visual para leitura prolongada.
+
+---
+
+**Elementos Visuais:**
+
+- **Ícones e Ilustrações:** Minimalistas com linhas orgânicas e fluidas, inspiradas na natureza.
+- **Gráficos e Ilustrações:** Leves e simplificados, evitando ruídos visuais.
+- **Botões:** Cantos arredondados suaves, sombras leves para destacar sutileza e conforto visual. Botões principais com a cor primária (#478E89 → #2F6874), e secundários com o tom claro (#A0CEC9).
+
+---
+
+**Popups/Modais:**
+
+### Estrutura Base
+- Headless UI Dialog e Transition
+- Z-index: 100
+- Backdrop com blur suave
+- Padding interno confortável: p-6
+- Sombras delicadas: shadow-lg
+
+### Exemplo de Estrutura
+```tsx
+<Dialog as="div" className="relative z-[100]">
+  <div className="fixed inset-0 bg-[#4A4A4A]/30 backdrop-blur-sm"></div>
+  <div className="fixed inset-0 flex justify-center items-center">
+    <div className="bg-white rounded-2xl p-6 shadow-lg">
+      <Dialog.Title className="text-lg font-semibold text-[#2F6874]">Título</Dialog.Title>
+      <Dialog.Description className="text-sm text-gray-600">Descrição breve.</Dialog.Description>
+      {/* Botões aqui */}
+    </div>
+  </div>
+</Dialog>
+```
+
+### Botões
+- **Botão Principal:**
+```tsx
+className="rounded-lg bg-gradient-to-r from-[#478E89] to-[#2F6874] px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity"
+```
+
+- **Botão Secundário:**
+```tsx
+className="rounded-lg border border-[#2F6874] px-4 py-2 text-sm font-medium text-[#2F6874] hover:bg-[#A0CEC9]/20 transition-colors"
+```
+
+### Animações
+```tsx
+<Transition
+  enter="ease-out duration-300"
+  enterFrom="opacity-0 scale-95"
+  enterTo="opacity-100 scale-100"
+  leave="ease-in duration-200"
+  leaveFrom="opacity-100 scale-100"
+  leaveTo="opacity-0 scale-95"
+>
+```
+
+### Acessibilidade
+- Utilizar Dialog.Title para títulos
+- Manter bom contraste
+- Trap focus
+- Fechamento com ESC disponível
+
+### Responsividade
+- Padding lateral no mobile: p-4
+- Largura máxima no desktop: max-w-md
+- Centralizado: flex justify-center items-center
+
+---
+
+Este design promove uma experiência acolhedora e intuitiva, alinhada com os princípios da terapia cognitivo-comportamental (TCC) proposta pelo Calmar, oferecendo um ambiente digital seguro e confortável para usuários lidarem com ansiedade e depressão.

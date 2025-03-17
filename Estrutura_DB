@@ -1,0 +1,29 @@
+# Estrutura do Banco de Dados
+
+## Tabelas
+
+### usuarios
+- id (uuid, PK, FK -> auth.users)
+- email (text)
+- nome (text, nullable)
+- created_at (timestamp with timezone)
+- updated_at (timestamp with timezone)
+
+Políticas de Segurança:
+- RLS habilitado
+- Usuários só podem ver/editar seus próprios dados
+
+Triggers:
+- Criação automática de registro após signup no auth.users
+
+### convites
+- id (uuid, PK)
+- codigo (text, unique)
+- utilizado (boolean, default false)
+- utilizado_por (uuid, FK -> auth.users)
+- data_criacao (timestamp with timezone)
+- data_utilizacao (timestamp with timezone, nullable)
+
+Políticas de Segurança:
+- RLS habilitado
+- Apenas usuários autenticados podem acessar 

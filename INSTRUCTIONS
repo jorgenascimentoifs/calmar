@@ -1,0 +1,9 @@
+# Estrutura de Páginas
+
+## Dashboard (/dashboard)
+- Página inicial após login
+- Layout com sidebar fixa
+- Cards de estatísticas
+- Seção de próximas atividades
+- Seção de progresso
+- Responsiva em todos os breakpoints
