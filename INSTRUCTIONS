@@ -1,9 +1,58 @@
-# Estrutura de Páginas
+# Calmar - Plataforma de Meditação
 
-## Dashboard (/dashboard)
+## Visão Geral
+Plataforma dedicada ao bem-estar mental através de práticas meditativas e acompanhamento personalizado.
+
+## Estrutura de Páginas
+
+### Dashboard (/dashboard)
 - Página inicial após login
 - Layout com sidebar fixa
 - Cards de estatísticas
 - Seção de próximas atividades
 - Seção de progresso
 - Responsiva em todos os breakpoints
+
+### Perfil (/perfil)
+- Gerenciamento de conta do usuário
+- Edição de informações pessoais
+- Configurações de segurança
+- Preferências de notificações
+- Responsiva em todos os breakpoints
+
+### Diário (/dashboard/diario)
+- Registro de práticas e reflexões
+- Histórico de meditações
+- Anotações pessoais
+
+### Sessões (/dashboard/sessoes)
+- Agendamento de sessões
+- Histórico de práticas
+- Estatísticas de progresso
+
+## Design System
+- Cores principais:
+  - Verde principal: #478E89
+  - Verde escuro: #2F6874
+  - Verde claro: #A0CEC9
+  - Texto principal: #39555C
+  - Background: #FAF9F2
+  - Bordas: #F5EFE0
+
+- Tipografia:
+  - Títulos: Nunito (700)
+  - Texto: Inter (400, 500)
+
+- Componentes:
+  - Cards com bordas suaves
+  - Botões com gradiente
+  - Inputs com focus ring
+  - Toasts para feedback
+  - Modais com backdrop blur
+
+## Padrões de Desenvolvimento
+- Next.js 13+ com App Router
+- Supabase para backend
+- TailwindCSS para estilos
+- TypeScript para type safety
+- React Hot Toast para notificações

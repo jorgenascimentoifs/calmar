@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import toast from 'react-hot-toast'
 import ConfirmationModal from './ConfirmationModal'
+import { usePathname } from 'next/navigation'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -21,6 +22,7 @@ type LogoutError = {
 export default function Sidebar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false)
+  const pathname = usePathname()
 
   const handleLogout = async () => {
     try {
@@ -84,10 +86,30 @@ export default function Sidebar() {
           </div>
           
           <nav className="space-y-2 flex-1">
-            <NavItem href="/dashboard" icon={<HomeIcon />} text="Início" active />
-            <NavItem href="/dashboard/diario" icon={<BookOpenIcon />} text="Diário" />
-            <NavItem href="/dashboard/sessoes" icon={<CalendarIcon />} text="Sessões" />
-            <NavItem href="/dashboard/perfil" icon={<UserIcon />} text="Perfil" />
+            <NavItem 
+              href="/dashboard" 
+              icon={<HomeIcon />} 
+              text="Início" 
+              active={pathname === '/dashboard'} 
+            />
+            <NavItem 
+              href="/dashboard/diario" 
+              icon={<BookOpenIcon />} 
+              text="Diário" 
+              active={pathname === '/dashboard/diario'} 
+            />
+            <NavItem 
+              href="/dashboard/sessoes" 
+              icon={<CalendarIcon />} 
+              text="Sessões" 
+              active={pathname === '/dashboard/sessoes'} 
+            />
+            <NavItem 
+              href="/perfil" 
+              icon={<UserIcon />} 
+              text="Perfil" 
+              active={pathname === '/perfil'} 
+            />
             <NavItem 
               href="#"
               icon={<ArrowRightOnRectangleIcon />}
@@ -129,20 +151,40 @@ export default function Sidebar() {
             </div>
             
             <nav className="space-y-2">
-              <NavItem href="/dashboard" icon={<HomeIcon />} text="Início" active />
-              <NavItem href="/dashboard/diario" icon={<BookOpenIcon />} text="Diário" />
-              <NavItem href="/dashboard/sessoes" icon={<CalendarIcon />} text="Sessões" />
-              <NavItem href="/dashboard/perfil" icon={<UserIcon />} text="Perfil" />
               <NavItem 
-              href="#"
-              icon={<ArrowRightOnRectangleIcon />}
-              text="Sair"
-              onClick={(e) => {
-                e.preventDefault()
-                setShowLogoutConfirmation(true)
-              }}
-              className="mt-4 !bg-red-50 !text-red-600 hover:!bg-red-100"
-            />
+                href="/dashboard" 
+                icon={<HomeIcon />} 
+                text="Início" 
+                active={pathname === '/dashboard'} 
+              />
+              <NavItem 
+                href="/dashboard/diario" 
+                icon={<BookOpenIcon />} 
+                text="Diário" 
+                active={pathname === '/dashboard/diario'} 
+              />
+              <NavItem 
+                href="/dashboard/sessoes" 
+                icon={<CalendarIcon />} 
+                text="Sessões" 
+                active={pathname === '/dashboard/sessoes'} 
+              />
+              <NavItem 
+                href="/perfil" 
+                icon={<UserIcon />} 
+                text="Perfil" 
+                active={pathname === '/perfil'} 
+              />
+              <NavItem 
+                href="#"
+                icon={<ArrowRightOnRectangleIcon />}
+                text="Sair"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setShowLogoutConfirmation(true)
+                }}
+                className="mt-4 !bg-red-50 !text-red-600 hover:!bg-red-100"
+              />
             </nav>
           </div>
         </div>

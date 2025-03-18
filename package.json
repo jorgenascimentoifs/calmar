@@ -1,9 +1,11 @@
 {
-  "name": "project",
+  "name": "calmar",
   "version": "0.1.0",
   "private": true,
+  "description": "Plataforma de meditação e bem-estar mental",
+  "author": "Calmar Team",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -11,14 +13,14 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
-    "@supabase/supabase-js": "^2.39.0",
-    "chart.js": "^4.4.8",
     "date-fns": "^4.1.0",
     "next": "15.2.2",
     "react": "^19.0.0",
-    "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
-    "react-hot-toast": "^2.5.2"
+    "react-hot-toast": "^2.5.2",
+    "@supabase/supabase-js": "^2.39.0",
+    "chart.js": "^4.4.1",
+    "react-chartjs-2": "^5.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
