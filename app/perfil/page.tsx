@@ -1,16 +1,11 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
+import { supabaseClient } from '@/utils/supabase'
 import { toast } from 'react-hot-toast'
 import { UserIcon, KeyIcon, BellIcon } from '@heroicons/react/24/outline'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 interface UserProfile {
   id: string
@@ -31,38 +26,34 @@ export default function PerfilPage() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('perfil')
 
-  useEffect(() => {
-    fetchUserProfile()
-  }, [])
-
-  const fetchUserProfile = async () => {
+  const getUser = async () => {
     try {
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+      const { data: { session } } = await supabaseClient.auth.getSession()
       
-      if (sessionError) throw sessionError
-      if (!session) {
-        window.location.href = '/dashboard'
-        return
+      if (session?.user) {
+        const { data: userData, error } = await supabaseClient
+          .from('usuarios')
+          .select('*')
+          .eq('id', session.user.id)
+          .single()
+        
+        if (error) throw error
+        
+        setUser(userData)
+        setNome(userData.nome || '')
+        setNotificacoesEmail(userData.notificacoes_email || false)
       }
-
-      const { data: userData, error: userError } = await supabase
-        .from('usuarios')
-        .select('*')
-        .eq('id', session.user.id)
-        .single()
-
-      if (userError) throw userError
-
-      setUser(userData)
-      setNome(userData.nome || '')
-      setNotificacoesEmail(userData.notificacoes_email || false)
-    } catch (error) {
-      toast.error('Erro ao carregar perfil')
-      console.error(error)
+    } catch {
+      console.error('Erro ao carregar dados do usuário')
+      toast.error('Erro ao carregar dados do usuário')
     } finally {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    getUser()
+  }, [])
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -71,7 +62,7 @@ export default function PerfilPage() {
     try {
       if (!user) throw new Error('Usuário não encontrado')
 
-      const { error } = await supabase
+      const { error } = await supabaseClient
         .from('usuarios')
         .update({ nome })
         .eq('id', user.id)
@@ -80,10 +71,10 @@ export default function PerfilPage() {
 
       toast.success('Perfil atualizado com sucesso!')
       setIsEditing(false)
-      fetchUserProfile()
-    } catch (error) {
+      getUser()
+    } catch {
       toast.error('Erro ao atualizar perfil')
-      console.error(error)
+      console.error('Erro ao atualizar perfil')
     } finally {
       setLoading(false)
     }
@@ -93,7 +84,7 @@ export default function PerfilPage() {
     try {
       if (!user) return
       
-      const { error } = await supabase
+      const { error } = await supabaseClient
         .from('usuarios')
         .update({ notificacoes_email: !notificacoesEmail })
         .eq('id', user.id)
@@ -102,9 +93,9 @@ export default function PerfilPage() {
 
       setNotificacoesEmail(!notificacoesEmail)
       toast.success('Preferências de notificação atualizadas!')
-    } catch (error) {
+    } catch {
       toast.error('Erro ao atualizar preferências')
-      console.error(error)
+      console.error('Erro ao atualizar preferências')
     }
   }
 
@@ -117,7 +108,7 @@ export default function PerfilPage() {
 
     setLoading(true)
     try {
-      const { error } = await supabase.auth.updateUser({
+      const { error } = await supabaseClient.auth.updateUser({
         password: newPassword
       })
 
@@ -127,9 +118,9 @@ export default function PerfilPage() {
       setIsChangingPassword(false)
       setNewPassword('')
       setConfirmPassword('')
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Erro ao atualizar senha'
-      toast.error(errorMessage)
+    } catch {
+      toast.error('Erro ao atualizar senha')
+      console.error('Erro ao atualizar senha')
     } finally {
       setLoading(false)
     }

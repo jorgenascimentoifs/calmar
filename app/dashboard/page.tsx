@@ -2,17 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react'
 import DailySchedule from '@/app/components/DailySchedule'
-import { createClient } from '@supabase/supabase-js'
+import { supabaseClient } from '@/utils/supabase'
 import AuthModal from '@/app/components/AuthModal'
 import { toast } from 'react-hot-toast'
 import StatisticsCard from '@/app/components/StatisticsCard'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 // Função para desenhar gráfico de linha
 const drawLineChart = (
@@ -135,47 +130,23 @@ export default function DashboardPage() {
 
   const checkUser = async () => {
     try {
-      // Verificar se existe uma sessão
-      const { data } = await supabase.auth.getSession()
-      const session = data.session
+      const { data: { session } } = await supabaseClient.auth.getSession()
       
-      // Log para debug
-      console.log("Status da sessão:", session ? "Ativa" : "Inativa")
-      
-      // Se não houver sessão, mostrar o modal de login
-      if (!session) {
-        console.log("Nenhuma sessão encontrada, exibindo modal de login")
-        setIsAuthModalOpen(true)
-        setIsLoading(false)
-        return
-      }
-      
-      // Se chegou aqui, temos uma sessão válida
-      console.log("Sessão encontrada, ID do usuário:", session.user.id)
-      
-      try {
-        // Buscar dados do usuário em um bloco try/catch separado
-        const { data: userData, error: userError } = await supabase
+      if (session?.user) {
+        const { data: userData, error: userError } = await supabaseClient
           .from('usuarios')
           .select('*')
           .eq('id', session.user.id)
           .single()
         
-        if (userError) {
-          console.error('Erro ao buscar dados do usuário:', userError)
-          toast.error('Erro ao carregar dados do usuário')
-        } else {
-          console.log("Dados do usuário carregados com sucesso")
-          setUserData(userData)
-        }
-      } catch (userDataError) {
-        // Tratar erro na busca de dados do usuário
-        console.error('Exceção ao buscar dados do usuário:', userDataError)
-        toast.error('Erro ao carregar dados do usuário')
+        if (userError) throw userError
+        
+        setUserData(userData)
+      } else {
+        setIsAuthModalOpen(true)
       }
-    } catch (authError) {
-      // Tratar erro na verificação de autenticação
-      console.error('Erro na verificação de autenticação:', authError)
+    } catch {
+      console.error('Erro ao verificar autenticação')
       toast.error('Erro ao verificar autenticação')
       setIsAuthModalOpen(true)
     } finally {

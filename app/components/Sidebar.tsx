@@ -4,15 +4,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { HomeIcon, BookOpenIcon, CalendarIcon, UserIcon, Bars3Icon, XMarkIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
+import { usePathname } from 'next/navigation'
+import { supabaseClient } from '@/utils/supabase'
 import toast from 'react-hot-toast'
 import ConfirmationModal from './ConfirmationModal'
-import { usePathname } from 'next/navigation'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 type LogoutError = {
   message: string;
@@ -26,7 +21,7 @@ export default function Sidebar() {
 
   const handleLogout = async () => {
     try {
-      const { error } = await supabase.auth.signOut()
+      const { error } = await supabaseClient.auth.signOut()
       if (error) throw error
       
       // Mostrar toast e aguardar antes de redirecionar
@@ -67,6 +62,8 @@ export default function Sidebar() {
           width={100}
           height={32}
           className="object-contain"
+          priority
+          style={{ width: 'auto', height: 'auto' }}
         />
         
         <div className="w-10 opacity-0" />
@@ -82,6 +79,8 @@ export default function Sidebar() {
               width={120}
               height={40}
               className="object-contain"
+              priority
+              style={{ width: 'auto', height: 'auto' }}
             />
           </div>
           
@@ -147,6 +146,8 @@ export default function Sidebar() {
                 width={120}
                 height={40}
                 className="object-contain"
+                priority
+                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
             

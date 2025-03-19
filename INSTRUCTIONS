@@ -56,3 +56,34 @@ Plataforma dedicada ao bem-estar mental através de práticas meditativas e acom
 - TailwindCSS para estilos
 - TypeScript para type safety
 - React Hot Toast para notificações
+
+## Diretrizes de Segurança
+
+### Logs e Debugging
+- ❌ NUNCA fazer console.log de dados sensíveis como:
+  - IDs de usuário
+  - Tokens de autenticação
+  - Emails
+  - Senhas
+  - Dados pessoais
+  - Status de sessão
+  
+- ✅ Logs permitidos:
+  - Mensagens genéricas de erro
+  - Status de operações (sucesso/erro)
+  - Informações não sensíveis da UI
+  - Métricas de performance
+
+### Boas Práticas de Segurança
+1. Sempre usar variáveis de ambiente para chaves de API
+2. Implementar rate limiting em endpoints sensíveis
+3. Validar inputs do usuário
+4. Usar HTTPS para todas as requisições
+5. Implementar timeout em sessões
+6. Sanitizar dados antes de exibir na UI
+7. Usar Row Level Security (RLS) no Supabase
+
+### Tratamento de Erros
+- Usar mensagens genéricas para o usuário
+- Logar detalhes técnicos apenas em ambiente de desenvolvimento
+- Nunca expor stacktraces em produção

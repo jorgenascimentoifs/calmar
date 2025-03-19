@@ -2,13 +2,8 @@
 
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
+import { supabaseClient } from '@/utils/supabase'
 import toast from 'react-hot-toast'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 type AuthError = {
   message: string;
@@ -29,7 +24,7 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean; onClos
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { error } = await supabaseClient.auth.signInWithPassword({
           email,
           password,
         })
@@ -41,7 +36,7 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean; onClos
           window.location.href = '/dashboard'
         }, 1500)
       } else {
-        const { data: inviteData, error: inviteError } = await supabase
+        const { data: inviteData, error: inviteError } = await supabaseClient
           .from('convites')
           .select('*')
           .eq('codigo', inviteCode)
@@ -52,7 +47,7 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean; onClos
           throw new Error('Código de convite inválido ou já utilizado')
         }
         
-        const { data: authData, error: signUpError } = await supabase.auth.signUp({
+        const { data: authData, error: signUpError } = await supabaseClient.auth.signUp({
           email,
           password,
         })
@@ -60,7 +55,7 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean; onClos
         if (signUpError) throw signUpError
         
         if (authData?.user) {
-          const { error: updateUserError } = await supabase
+          const { error: updateUserError } = await supabaseClient
             .from('usuarios')
             .update({ nome })
             .eq('id', authData.user.id)
@@ -69,7 +64,7 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean; onClos
             console.error('Erro ao atualizar nome do usuário:', updateUserError)
           }
           
-          const { error: updateError } = await supabase
+          const { error: updateError } = await supabaseClient
             .from('convites')
             .update({
               utilizado: true,
@@ -112,7 +107,7 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean; onClos
   }
 
   const handleClose = async () => {
-    const { data: { session } } = await supabase.auth.getSession()
+    const { data: { session } } = await supabaseClient.auth.getSession()
     if (session) {
       onClose()
     }
@@ -123,7 +118,7 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean; onClos
       <Dialog as="div" className="relative z-[100]" onClose={handleClose}>
         <div className="fixed inset-0 bg-[#4A4A4A]/30 backdrop-blur-sm" />
         <div className="fixed inset-0 flex justify-center items-center">
-          <Dialog.Panel className="bg-white rounded-2xl p-6 shadow-lg w-full max-w-md">
+          <Dialog.Panel className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg w-[calc(100%-2rem)] sm:w-full max-w-md mx-4 sm:mx-0">
             <Dialog.Title className="text-lg font-semibold text-[#2F6874] mb-4">
               {isLogin ? 'Fazer Login' : 'Criar Conta'}
             </Dialog.Title>
